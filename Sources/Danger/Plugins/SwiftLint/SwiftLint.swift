@@ -93,6 +93,7 @@ public enum SwiftLint {
                             configFile: String? = nil,
                             strict: Bool = false,
                             quiet: Bool = true,
+                            silent: Bool = false,
                             swiftlintPath: SwiftlintPath? = nil) -> [SwiftLintViolation] {
         lint(lintStyle: lintStyle,
              danger: danger,
@@ -101,7 +102,9 @@ public enum SwiftLint {
              inline: inline,
              configFile: configFile,
              strict: strict,
-             quiet: quiet)
+             quiet: quiet,
+             silent: silent
+        )
     }
 }
 
@@ -117,6 +120,7 @@ extension SwiftLint {
         configFile: String? = nil,
         strict: Bool = false,
         quiet: Bool = true,
+        silent: Bool = false,
         currentPathProvider: CurrentPathProvider = DefaultCurrentPathProvider(),
         outputFilePath: String = tmpSwiftlintOutputFilePath,
         reportDeleter: SwiftlintReportDeleting = SwiftlintReportDeleter(),
@@ -185,11 +189,14 @@ extension SwiftLint {
         }
 
         violations = violations.updatingForCurrentPathProvider(currentPathProvider, strictSeverity: strict)
-        handleViolations(violations,
-                         inline: inline,
-                         markdownAction: markdownAction,
-                         failInlineAction: failInlineAction,
-                         warnInlineAction: warnInlineAction)
+
+        if !silent {
+            handleViolations(violations,
+                             inline: inline,
+                             markdownAction: markdownAction,
+                             failInlineAction: failInlineAction,
+                             warnInlineAction: warnInlineAction)
+        }
 
         return violations
     }
