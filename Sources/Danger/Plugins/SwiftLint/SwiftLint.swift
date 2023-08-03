@@ -93,7 +93,7 @@ public enum SwiftLint {
                             configFile: String? = nil,
                             strict: Bool = false,
                             quiet: Bool = true,
-                            silent: Bool = false,
+                            silent: Bool,
                             swiftlintPath: SwiftlintPath? = nil) -> [SwiftLintViolation] {
         lint(lintStyle: lintStyle,
              danger: danger,
